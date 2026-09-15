@@ -205,31 +205,31 @@ The primary modified architecture uses:
 
 The attention block receives an EfficientNet feature tensor
 
-\[
+$$
 X \in \mathbb{R}^{B \times C \times H \times W}.
-\]
+$$
 
 Three learnable projections are constructed:
 
-\[
+$$
 Q = W_qX,\qquad
 K = W_kX,\qquad
 V = W_vX.
-\]
+$$
 
 The spatial attention matrix is:
 
-\[
+$$
 A = \operatorname{softmax}(QK^T),
-\]
+$$
 
 and the attended representation is merged through a residual formulation:
 
-\[
+$$
 Y = X + \gamma O.
-\]
+$$
 
-Here, \(\gamma\) is a learnable scalar initialized to zero.
+Here, $\gamma$ is a learnable scalar initialized to zero.
 
 This design is important because the attention module initially behaves approximately as an identity mapping. During optimization, the network can progressively learn the contribution of global spatial dependencies without abruptly replacing the EfficientNet representation at initialization.
 
@@ -263,11 +263,11 @@ It is:
 - not a trainable neural Retinex model;
 - not conditionally activated by an image-brightness threshold.
 
-The RGB image is converted to **YCrCb**, and Retinex is applied only to the luminance channel \(Y\). Chromatic channels \(Cr\) and \(Cb\) are preserved.
+The RGB image is converted to **YCrCb**, and Retinex is applied only to the luminance channel $Y$. Chromatic channels $Cr$ and $Cb$ are preserved.
 
 The multi-scale reflectance estimate is:
 
-\[
+$$
 R(x,y)
 =
 \frac{1}{3}
@@ -277,7 +277,7 @@ R(x,y)
 -
 \log(G_{\sigma_k} * (Y(x,y)+1))
 \right].
-\]
+$$
 
 ### Retinex configuration
 
@@ -334,7 +334,7 @@ For each detected face:
 
 For reference samples belonging to the same identity, the train embeddings are averaged and normalized again to form a centroid:
 
-\[
+$$
 g_i =
 \frac{
 \frac{1}{N_i}\sum_{j=1}^{N_i}e_{ij}
@@ -343,15 +343,15 @@ g_i =
 \frac{1}{N_i}\sum_{j=1}^{N_i}e_{ij}
 \right\|_2
 }.
-\]
+$$
 
-A query embedding \(q\) is compared against gallery centroid \(g_i\) using:
+A query embedding $q$ is compared against gallery centroid $g_i$ using:
 
-\[
+$$
 d(q,g_i)
 =
 \sqrt{\max(2 - 2g_i^Tq, 0)}.
-\]
+$$
 
 For L2-normalized embeddings, this distance is monotonically related to cosine similarity.
 
@@ -470,20 +470,20 @@ The most informative Retinex comparison is performed **within the same architect
 
 The key result is that **EfficientNet-B0 + Self-Attention is the only evaluated architecture whose AP improves after enabling Retinex**:
 
-\[
+$$
 0.822 \rightarrow 0.843
-\]
+$$
 
 corresponding to:
 
-\[
+$$
 \Delta AP = \mathbf{+0.021}.
-\]
+$$
 
 By contrast:
 
-- ResNet50: \(\Delta AP=-0.031\)
-- MobileNetV3: \(\Delta AP=-0.032\)
+- ResNet50: $\Delta AP=-0.031$
+- MobileNetV3: $\Delta AP=-0.032$
 
 Retinex therefore exhibits an **architecture-dependent effect** rather than a universal improvement.
 
@@ -526,7 +526,7 @@ The notebook evaluates identity robustness under four conditions:
 
 1. original image;
 2. brightness multiplied by 0.5;
-3. gamma transformation with \(\gamma=1.6\);
+3. gamma transformation with $\gamma=1.6$;
 4. one-sided synthetic shadow.
 
 The reference gallery and identity threshold remain fixed.
@@ -700,9 +700,9 @@ Retinex does not improve every model in the same way.
 
 Only EfficientNet-B0 + Self-Attention shows a positive AP change:
 
-\[
+$$
 \mathbf{\Delta AP=+0.021}.
-\]
+$$
 
 The result supports an architecture-specific interpretation:
 
